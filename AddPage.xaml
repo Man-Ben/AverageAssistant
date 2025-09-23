@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AverageAssistant.AddPage"
+             >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Entry
+            Text = "Enter the Class' name"
+            Placeholder = "Name"
+            Keyboard = "Text"
+            ClearButtonVisibility="WhileEditing"
+            Grid.Column = "0"
+            Grid.Row = "1"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            
+            >
+        </Entry>
+    </Grid>
+
+</ContentPage>

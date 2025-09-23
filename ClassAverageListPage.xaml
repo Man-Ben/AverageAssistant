@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AverageAssistant.ClassAverageListPage"
+             >
+    <Grid>
+        <Button
+            Text="+"
+            TextColor="White"
+            FontSize = "50"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin = "40"
+            BackgroundColor="Transparent"
+            Command = "{Binding GoToAddPageCommand}"
+            ></Button>
+    </Grid>
+    
+    
+</ContentPage>

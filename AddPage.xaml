@@ -4,30 +4,56 @@
              x:Class="AverageAssistant.AddPage"
              >
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
+    <StackLayout
+        HorizontalOptions="Center"
+        VerticalOptions = "Center"
+        >
         <Entry
-            Text = "Enter the Class' name"
-            Placeholder = "Name"
-            Keyboard = "Text"
-            ClearButtonVisibility="WhileEditing"
-            Grid.Column = "0"
-            Grid.Row = "1"
-            HorizontalOptions="Start"
-            VerticalOptions="Start"
+            Placeholder = "Enter the Class Name"
+            PlaceholderColor = "Snow"
+            ClearButtonVisibility = "WhileEditing"
+            TextColor = "Snow"
             
+            ></Entry>
+        <Picker
+            Margin = "20"
+            Title = "Select the Grade system"
+            TitleColor = "Snow"
+            ItemsSource = "{Binding gradeSystem}"
+            SelectedItem = "{Binding selectedGradeSystem}"
             >
-        </Entry>
-    </Grid>
+        </Picker>
+        <Entry
+            Placeholder = "Enter the number of lessons per week for this subject"
+            PlaceholderColor = "Snow"
+            ClearButtonVisibility = "WhileEditing"
+            Keyboard = "Numeric"
+            MaxLength="2"
+            IsVisible = "{Binding entryVisible}"
+            
+            ></Entry>
 
+        <HorizontalStackLayout
+        Spacing="20"
+        Margin = "40"
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        >
+            <Button
+            Text = "Cancel"
+            TextColor = "Snow"
+            BackgroundColor = "Transparent"
+            BorderColor=  "Snow"
+            BorderWidth = "1"
+            Command = "{Binding GoBackCommand}"
+            ></Button>
+            <Button
+            Text = "Add"
+            TextColor = "Snow"
+            BackgroundColor = "DarkBlue"
+            Command = "{Binding}"
+            ></Button>
+        </HorizontalStackLayout>
+    </StackLayout>
 </ContentPage>

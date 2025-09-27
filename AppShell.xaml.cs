@@ -6,6 +6,7 @@
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(AddPage), typeof(AddPage));
+            Routing.RegisterRoute(nameof(ClassAverageListPage), typeof(ClassAverageListPage));
         }
     }
 }

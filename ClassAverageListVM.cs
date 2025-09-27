@@ -7,6 +7,6 @@ public partial class caViewModel : ObservableObject
     public async Task GoToAddPage()
     {
         await Shell.Current.GoToAsync(nameof(AddPage));
- 
+
     }
 }

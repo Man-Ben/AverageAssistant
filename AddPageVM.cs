@@ -1,7 +1,8 @@
-﻿using AverageAssistant;
+﻿namespace AverageAssistant.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+
 
 public partial class AddPageTools : ObservableObject
 {
@@ -10,23 +11,29 @@ public partial class AddPageTools : ObservableObject
     [ObservableProperty]
     public string? nrLessons;
 
-    public ObservableCollection<string> gradeSystem { get; } = new() {  "American", "Romanian", "Hungarian" };
+    public ObservableCollection<string> GradeSystem { get; } = ["American", "Romanian", "Hungarian"];
 
     [ObservableProperty]
     public string? selectedGradeSystem;
 
-    [ObservableProperty]
-    bool entryVisible = false;
+    public bool IsEntryVisible => selectedGradeSystem == "Romanian";
 
-    public void entryVisibilityControl()
+    public void EntryVisibilityControl()
     {
-        if (selectedGradeSystem == "Romanian") 
-                entryVisible = true;
+        OnPropertyChanged(nameof(IsEntryVisible));
     }
 
     [RelayCommand]
-    public async Task GoBack()
+    public static async Task ConfirmLeave()
     {
-        await Shell.Current.GoToAsync("..");
+        bool answer = await Shell.Current.DisplayAlert("Warning!", "Are you sure you want to leave the page without saving? Your data might be lost!", "Yes", "No");
+        if (answer)
+            await Shell.Current.GoToAsync("..");
     }
+
+    /*[RelayCommand]
+     public static async Task Add()
+     {
+
+     }*/
 }

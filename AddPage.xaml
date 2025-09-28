@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm = "clr-namespace:AverageAssistant.ViewModels"
              x:Class="AverageAssistant.AddPage"
+             x:DataType = "vm:AddPageTools"
              >
 
-
+    <ScrollView>
     <StackLayout
         HorizontalOptions="Center"
         VerticalOptions = "Center"
         >
-        <Entry
+            <Entry
             Placeholder = "Enter the Class Name"
             PlaceholderColor = "Snow"
             ClearButtonVisibility = "WhileEditing"
             TextColor = "Snow"
             
             ></Entry>
-        <Picker
+
+        <Entry
             Margin = "20"
+            Placeholder = "Enter your grades"
+            PlaceholderColor = "Snow"
+            ClearButtonVisibility = "WhileEditing"
+            Keyboard = "Numeric"
+            
+            ></Entry>
+        <Picker
+
             Title = "Select the Grade system"
             TitleColor = "Snow"
-            ItemsSource = "{Binding gradeSystem}"
-            SelectedItem = "{Binding selectedGradeSystem}"
+            ItemsSource = "{Binding GradeSystem}"
+            SelectedItem = "{Binding SelectedGradeSystem, Mode =TwoWay}"
             >
         </Picker>
         <Entry
@@ -30,10 +41,9 @@
             ClearButtonVisibility = "WhileEditing"
             Keyboard = "Numeric"
             MaxLength="2"
-            IsVisible = "{Binding entryVisible}"
+            IsVisible = "{Binding IsEntryVisible}"
             
-            ></Entry>
-
+        ></Entry>
         <HorizontalStackLayout
         Spacing="20"
         Margin = "40"
@@ -46,14 +56,15 @@
             BackgroundColor = "Transparent"
             BorderColor=  "Snow"
             BorderWidth = "1"
-            Command = "{Binding GoBackCommand}"
+            Command = "{Binding ConfirmLeaveCommand}"
             ></Button>
             <Button
             Text = "Add"
             TextColor = "Snow"
             BackgroundColor = "DarkBlue"
-            Command = "{Binding}"
+
             ></Button>
         </HorizontalStackLayout>
     </StackLayout>
+    </ScrollView>
 </ContentPage>

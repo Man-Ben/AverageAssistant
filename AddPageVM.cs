@@ -16,15 +16,15 @@ public partial class AddPageTools : ObservableObject
     [ObservableProperty]
     public string? selectedGradeSystem;
 
-    public bool IsEntryVisible => selectedGradeSystem == "Romanian";
+    public bool IsEntryVisible => SelectedGradeSystem == "Romanian";
 
-    public void EntryVisibilityControl()
+    partial void OnSelectedGradeSystemChanged(string? value)
     {
         OnPropertyChanged(nameof(IsEntryVisible));
     }
 
     [RelayCommand]
-    public static async Task ConfirmLeave()
+    public static async Task ConfirmLeave(string? value)
     {
         bool answer = await Shell.Current.DisplayAlert("Warning!", "Are you sure you want to leave the page without saving? Your data might be lost!", "Yes", "No");
         if (answer)

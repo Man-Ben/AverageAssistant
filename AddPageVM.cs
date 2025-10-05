@@ -2,25 +2,37 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-
+using CommunityToolkit.Mvvm.Messaging;
 
 public partial class AddPageTools : ObservableObject
 {
     [ObservableProperty]
-    public string? className;
-    [ObservableProperty]
-    public string? nrLessons;
+    public string? grade;
 
-    public ObservableCollection<string> GradeSystem { get; } = ["American", "Romanian", "Hungarian"];
+    [ObservableProperty]
+    public string? subjectName;
+
+    [ObservableProperty]
+    public string? numberOfLessons;
+
+    [ObservableProperty]
+    public string? usersGrades;
 
     [ObservableProperty]
     public string? selectedGradeSystem;
 
-    public bool IsEntryVisible => SelectedGradeSystem == "Romanian";
+    public ObservableCollection<string> GradeSystem { get; } = new ObservableCollection<string>
+{
+    "American",
+    "Romanian",
+    "Hungarian"
+};
+
+    public bool IsVisible => SelectedGradeSystem == "Romanian";
 
     partial void OnSelectedGradeSystemChanged(string? value)
     {
-        OnPropertyChanged(nameof(IsEntryVisible));
+        OnPropertyChanged(nameof(IsVisible));
     }
 
     [RelayCommand]
@@ -31,9 +43,18 @@ public partial class AddPageTools : ObservableObject
             await Shell.Current.GoToAsync("..");
     }
 
-    /*[RelayCommand]
-     public static async Task Add()
+    [RelayCommand]
+     public async Task Add()
      {
-
-     }*/
+        if (!string.IsNullOrWhiteSpace(UsersGrades))
+        {
+            var cleanedData = UsersGrades?
+                .Split(' ', ',')
+                .Select(x => double.TryParse(x, out double n) ? n:0)
+                .ToList() ?? new List<double>();
+            WeakReferenceMessenger.Default.Send(new Messengers.GradesListMessage(cleanedData: cleanedData));
+            UsersGrades = string.Empty;
+        }
+        await Shell.Current.GoToAsync("..");
+     }
 }

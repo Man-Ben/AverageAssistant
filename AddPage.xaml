@@ -11,39 +11,77 @@
         HorizontalOptions="Center"
         VerticalOptions = "Center"
         >
+
+            <Label
+                    Text = "Enter the grade for this tab"
+                    TextColor = "Snow"
+            ></Label>
+                
             <Entry
-            Placeholder = "Enter the Class Name"
-            PlaceholderColor = "Snow"
-            ClearButtonVisibility = "WhileEditing"
-            TextColor = "Snow"
-            
+                    Text = "{Binding Grade}"
+                    Margin = "10"
+                    ClearButtonVisibility = "WhileEditing"
+                    PlaceholderColor = "Snow"
+                    TextColor = "Snow"
             ></Entry>
 
+
+        <Label
+                Margin = "10"
+                Text = "Enter the subject's name"
+                TextColor = "Snow"
+             ></Label>
+        
         <Entry
-            Margin = "20"
-            Placeholder = "Enter your grades"
+                Text = "{Binding SubjectName}"
+                Margin = "10"
+                PlaceholderColor = "Snow"
+                ClearButtonVisibility = "WhileEditing"
+                TextColor = "Snow"
+            
+        ></Entry>
+
+        <Label
+                Text="Enter your grades"
+                TextColor = "Snow"
+        ></Label>
+        
+        <Entry
+            Text = "{Binding UsersGrades}"
+            Margin = "10"
             PlaceholderColor = "Snow"
             ClearButtonVisibility = "WhileEditing"
             Keyboard = "Numeric"
             
-            ></Entry>
-        <Picker
+        ></Entry>
 
-            Title = "Select the Grade system"
-            TitleColor = "Snow"
+        <Label
+                Text ="Select the Grade system" 
+                TextColor = "Snow"
+        ></Label>
+
+            <Picker
+            Margin = "10"   
             ItemsSource = "{Binding GradeSystem}"
-            SelectedItem = "{Binding SelectedGradeSystem, Mode =TwoWay}"
-            >
+            SelectedItem = "{Binding SelectedGradeSystem, Mode = TwoWay}"
+        >
         </Picker>
+        <Label
+             Text="Enter the number of lessons per week for this subject"
+             TextColor = "Snow"
+             IsVisible = "{Binding IsVisible}"
+        ></Label>
+        
         <Entry
-            Placeholder = "Enter the number of lessons per week for this subject"
+            Text = "{Binding NumberOfLessons}"
+            Margin = "10"
             PlaceholderColor = "Snow"
             ClearButtonVisibility = "WhileEditing"
             Keyboard = "Numeric"
             MaxLength="2"
-            IsVisible = "{Binding IsEntryVisible}"
-            
+            IsVisible = "{Binding IsVisible}"
         ></Entry>
+        
         <HorizontalStackLayout
         Spacing="20"
         Margin = "40"
@@ -62,7 +100,7 @@
             Text = "Add"
             TextColor = "Snow"
             BackgroundColor = "DarkBlue"
-
+            Command = "{Binding AddCommand}"
             ></Button>
         </HorizontalStackLayout>
     </StackLayout>

@@ -5,7 +5,6 @@
              x:Class="AverageAssistant.AddPage"
              x:DataType = "vm:AddPageTools"
              >
-
     <ScrollView>
     <StackLayout
         HorizontalOptions="Center"
@@ -47,7 +46,8 @@
         ></Label>
         
         <Entry
-            Text = "{Binding UsersGrades}"
+            
+            Text = "{Binding GradesInput, Mode = TwoWay}"
             Margin = "10"
             PlaceholderColor = "Snow"
             ClearButtonVisibility = "WhileEditing"
@@ -73,7 +73,7 @@
         ></Label>
         
         <Entry
-            Text = "{Binding NumberOfLessons}"
+            Text = "{Binding NumberOfLessonsInput}"
             Margin = "10"
             PlaceholderColor = "Snow"
             ClearButtonVisibility = "WhileEditing"

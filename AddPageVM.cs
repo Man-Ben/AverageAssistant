@@ -1,8 +1,9 @@
 ﻿namespace AverageAssistant.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Messaging;
+using System.Collections.ObjectModel;
+using AverageAssistant.Models;
 
 public partial class AddPageTools : ObservableObject
 {
@@ -13,13 +14,21 @@ public partial class AddPageTools : ObservableObject
     public string? subjectName;
 
     [ObservableProperty]
-    public string? numberOfLessons;
+    public ObservableCollection<int> usersGrades = new();
 
     [ObservableProperty]
-    public string? usersGrades;
+    public int numberOfLessons;
+
+    [ObservableProperty]
+    public string? numberOfLessonsInput;
 
     [ObservableProperty]
     public string? selectedGradeSystem;
+
+    [ObservableProperty]
+    public string gradesInput = "";
+
+    public ObservableCollection<Record> Records { get; } = new();
 
     public ObservableCollection<string> GradeSystem { get; } = new ObservableCollection<string>
 {
@@ -30,15 +39,18 @@ public partial class AddPageTools : ObservableObject
 
     public bool IsVisible => SelectedGradeSystem == "Romanian";
 
-    partial void OnSelectedGradeSystemChanged(string? value)
+    partial void OnSelectedGradeSystemChanged(string? oldValue, string? newValue)
     {
         OnPropertyChanged(nameof(IsVisible));
     }
 
+
     [RelayCommand]
     public static async Task ConfirmLeave(string? value)
     {
-        bool answer = await Shell.Current.DisplayAlert("Warning!", "Are you sure you want to leave the page without saving? Your data might be lost!", "Yes", "No");
+        bool answer = await Shell.Current.DisplayAlert("Warning!", 
+        "Are you sure you want to leave the page without saving? Your data might be lost!", "Yes", "No");
+
         if (answer)
             await Shell.Current.GoToAsync("..");
     }
@@ -46,15 +58,31 @@ public partial class AddPageTools : ObservableObject
     [RelayCommand]
      public async Task Add()
      {
-        if (!string.IsNullOrWhiteSpace(UsersGrades))
+
+        UsersGrades.Clear();
+        if (!string.IsNullOrWhiteSpace(GradesInput))
         {
-            var cleanedData = UsersGrades?
-                .Split(' ', ',')
-                .Select(x => double.TryParse(x, out double n) ? n:0)
-                .ToList() ?? new List<double>();
-            WeakReferenceMessenger.Default.Send(new Messengers.GradesListMessage(cleanedData: cleanedData));
-            UsersGrades = string.Empty;
+            var gradeInNumbers = GradesInput
+                                .Split(new char[] { ',', ' ' }, System.StringSplitOptions.RemoveEmptyEntries)
+                                .Select(s => int.TryParse(s, out var number) ? number : 0);
+            foreach (var grade in gradeInNumbers)
+                UsersGrades.Add(grade);
         }
+
+        NumberOfLessons = int.TryParse(NumberOfLessonsInput, out var lessons) ? lessons : 0;
+
+        var newRecord = new Record();
+        {
+            newRecord.Grade = Grade ?? string.Empty;
+            newRecord.SubjectName = SubjectName ?? string.Empty;
+            newRecord.UsersGrades = UsersGrades.ToList();
+            newRecord.NumberOfLessons = NumberOfLessons;
+            newRecord.IsVisible = IsVisible;
+
+        }
+
+        WeakReferenceMessenger.Default.Send(newRecord);
+
         await Shell.Current.GoToAsync("..");
      }
 }

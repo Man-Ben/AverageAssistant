@@ -2,37 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm = "clr-namespace:AverageAssistant.ViewModels"
+             xmlns:models="clr-namespace:AverageAssistant.Models"
              x:Class="AverageAssistant.ClassAverageListPage"
              x:DataType = "vm:CaViewModel"
-    >
-    <ScrollView>
-    <Grid>
 
-            <CollectionView ItemsSource = "{Binding UsersGrades}">
+    >
+
+    <Grid>
+            <CollectionView
+                ItemsSource="{Binding Records}"
+                HorizontalOptions = "Center"
+            >
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="x:Double">
-                        <Label
-                            Text = "{Binding .}"
-                            TextColor = "Snow"
-                            ></Label>                       
-                    </DataTemplate>
+                    <DataTemplate
+                        x:DataType = "models:Record"
+                        >
+                    <Border
+                        StrokeShape="5,5"
+                        Margin = "10"
+                        Padding = "10"
+                        >
+                        <StackLayout
+                            Spacing = "5"
+                            >
+                        
+                            <Label
+                                Text = "{Binding GradeDisplay}"
+                                FontSize = "Medium"
+                                TextColor = "Snow"    
+                            ></Label>
+
+                            <Label
+                                Text = "{Binding SubjectNameDisplay}"
+                                FontSize = "Medium"
+                                TextColor = "Snow"
+                                ></Label>
+                            <Label
+                                Text = "{Binding GradesDisplay}"
+                                TextColor = "Snow"
+                                ></Label>
+                            <Label
+                                Text = "{Binding NumberOfLessonsDisplay}"
+                                TextColor = "Snow"
+                                IsVisible = "{Binding IsVisible}"
+                                ></Label>
+                        
+                    </StackLayout>
+                    </Border>
+                </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        
-        <HorizontalStackLayout
-                HorizontalOptions="End"
-                VerticalOptions="End"
+
+    <AbsoluteLayout
+            HorizontalOptions="End"
+            VerticalOptions="End"
             >
-            <Button
-                Text="+"
-                TextColor="White"
-                FontSize = "50"
-                Margin = "40"
-                BackgroundColor="Transparent"
-                Command = "{Binding GoToAddPageCommand}"
-            ></Button>
-        </HorizontalStackLayout>
+
+        <Button
+                    Text="+"
+                    TextColor="White"
+                    FontSize = "50"
+                    Margin = "40"
+                    BackgroundColor="Transparent"
+                    Command = "{Binding GoToAddPageCommand}"
+                    AbsoluteLayout.LayoutBounds = "1,1,AutoSize,AutoSize"
+                    AbsoluteLayout.LayoutFlags = "PositionProportional"
+                ></Button>
+
+    </AbsoluteLayout>
     </Grid>
-    </ScrollView>
 
 </ContentPage>

@@ -1,31 +1,35 @@
 ﻿namespace AverageAssistant.ViewModels;
 
-using AverageAssistant.Messengers;
+using AverageAssistant.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using CommunityToolkit.Mvvm.Messaging;
 
 public partial class CaViewModel : ObservableObject
 {
-    public class GradeItem
-    {
-        public int Value { get; set; }
-    }
+
+
     [ObservableProperty]
-    public ObservableCollection<double> usersGrades = [];
+    public string? grade;
+
+    [ObservableProperty]
+    public string? subjectName;
+
+    [ObservableProperty]
+    public ObservableCollection<int> usersGrades = new();
+
+    [ObservableProperty]
+    public int numberOfLessons;
+
+    public ObservableCollection<Record> Records { get; } = new();
 
     public CaViewModel()
     {
-        WeakReferenceMessenger.Default.Register<GradesListMessage>(this, (r, m) =>
+        WeakReferenceMessenger.Default.Register<CaViewModel,Record>(this, (r, newRecord) =>
         {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                usersGrades.Clear();
-                foreach (var grade in m.Value)
-                    usersGrades.Add(grade);
-            });
+                r.Records.Add(newRecord);
         });
     }
 

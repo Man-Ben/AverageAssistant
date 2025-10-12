@@ -23,25 +23,25 @@ public partial class AddPageTools : ObservableObject
     public string? numberOfLessonsInput;
 
     [ObservableProperty]
-    public string? selectedGradeSystem;
+    public string? selectedAverageSystem;
 
     [ObservableProperty]
-    public string gradesInput = "";
+    public string gradesInput = string.Empty;
 
     public ObservableCollection<Record> Records { get; } = new();
 
-    public ObservableCollection<string> GradeSystem { get; } = new ObservableCollection<string>
+    public ObservableCollection<string> AverageSystemPicker { get; } = new ObservableCollection<string>
 {
-    "American",
+    "English",
     "Romanian",
     "Hungarian"
 };
 
-    public bool IsVisible => SelectedGradeSystem == "Romanian";
+    public bool IsNrLessonsVisible => selectedAverageSystem == "Romanian";
 
-    partial void OnSelectedGradeSystemChanged(string? oldValue, string? newValue)
+    partial void OnSelectedAverageSystemChanged(string? oldValue, string? newValue)
     {
-        OnPropertyChanged(nameof(IsVisible));
+        OnPropertyChanged(nameof(IsNrLessonsVisible));
     }
 
 
@@ -77,8 +77,8 @@ public partial class AddPageTools : ObservableObject
             newRecord.SubjectName = SubjectName ?? string.Empty;
             newRecord.UsersGrades = UsersGrades.ToList();
             newRecord.NumberOfLessons = NumberOfLessons;
-            newRecord.IsVisible = IsVisible;
-
+            newRecord.IsNrLessonsVisible = IsNrLessonsVisible;
+            newRecord.SelectedAverageSystem = selectedAverageSystem ?? string.Empty;
         }
 
         WeakReferenceMessenger.Default.Send(newRecord);

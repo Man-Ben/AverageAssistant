@@ -29,22 +29,25 @@
                             <Label
                                 Text = "{Binding GradeDisplay}"
                                 FontSize = "Medium"
-                                TextColor = "Snow"    
+                                TextColor = "Snow"  
+                                IsVisible = "{Binding IsGradeVisible}"
                             ></Label>
 
                             <Label
                                 Text = "{Binding SubjectNameDisplay}"
                                 FontSize = "Medium"
                                 TextColor = "Snow"
+                                IsVisible = "{Binding IsSubjectNameVisible}"
                                 ></Label>
                             <Label
                                 Text = "{Binding GradesDisplay}"
                                 TextColor = "Snow"
+                                IsVisible = "{Binding IsUsersGradesVisible}"
                                 ></Label>
                             <Label
                                 Text = "{Binding NumberOfLessonsDisplay}"
                                 TextColor = "Snow"
-                                IsVisible = "{Binding IsVisible}"
+                                IsVisible = "{Binding IsNrLessonsVisible}"
                                 ></Label>
                         
                     </StackLayout>

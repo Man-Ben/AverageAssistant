@@ -6,7 +6,8 @@ namespace AverageAssistant.Models;
 public class Record
 {
     public List<int> UsersGrades { get; set; } = new();
-    public List<decimal> UsersAverages { get; set; } = new();
+    //public List<decimal> UsersAverages { get; set; } = new();
+   
     public int NumberOfLessons;
 
 

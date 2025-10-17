@@ -1,14 +1,15 @@
 ﻿using AverageAssistant.Models;
+using AverageAssistant.Services;
 
 namespace AverageAssistant.Services;
 
 public interface IAverageSystem
 {
-    decimal Calculator(Record UsersGrades, Record UsersAverages);
-    decimal CorrectionCalculator(Record UsersGrades, decimal starterValue, decimal endValue, decimal bestGradeInTheSystem);
-    string HungarianAverageSystem(Record UsersGrades, Record UsersAverages);
-    string RomanianAverageSystem(Record UsersGrades, Record UsersAverages);
-    string EnglishAverageSystem(Record UsersGrades, Record UsersAverages);
-    string UsedGradeSystem(Record AverageDisplay, Record SelectedAverageSystem);
+    decimal Calculator(Record UsersGrades);
+    decimal CorrectionCalculator(Record UsersGrades, decimal starterValue, decimal endValue, decimal bestGradeInTheSystem, string functionOfMethod);
+    string HungarianAverageSystem(Record UsersGrades);
+    string RomanianAverageSystem(Record UsersGrades);
+    string EnglishAverageSystem(Record UsersGrades);
+    string UsedAverageSystem(Record UsersGrades, Record Average, Record SelectedAverageSystem);
 
 }

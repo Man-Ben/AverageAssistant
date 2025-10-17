@@ -1,4 +1,5 @@
 ﻿using AverageAssistant.Models;
+using AverageAssistant.Services;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
 
@@ -6,7 +7,7 @@ namespace AverageAssistant.Services;
 
 public class AverageCalculator : IAverageSystem
 {
-    decimal IAverageSystem.Calculator(Record UsersGrades, Record UsersAverages)
+    decimal IAverageSystem.Calculator(Record UsersGrades)
     {
         var gradesList = UsersGrades.UsersGrades;
 
@@ -21,7 +22,7 @@ public class AverageCalculator : IAverageSystem
            
     }
 
-    decimal IAverageSystem.CorrectionCalculator(Record UsersGrades, decimal starterValue, decimal endValue, decimal bestGradeInTheSystem)
+    decimal IAverageSystem.CorrectionCalculator(Record UsersGrades, decimal starterValue, decimal endValue, decimal bestGradeInTheSystem, string functionOfMethod)
     {
         var gradesList = UsersGrades.UsersGrades;
 
@@ -29,77 +30,68 @@ public class AverageCalculator : IAverageSystem
         
         int numberOfBestGrades = 0;
 
-        while(starterValue < endValue)
+        while(starterValue <= endValue)
         {
             sumOfGrades += bestGradeInTheSystem;
-            starterValue = sumOfGrades / (gradesList.Count + numberOfBestGrades);
             numberOfBestGrades++;
+            starterValue = sumOfGrades / (gradesList.Count + numberOfBestGrades);
         }
 
-        return numberOfBestGrades;
+        
+        if (functionOfMethod == "CorrectedAverage") 
+                return starterValue; 
+        else
+            return numberOfBestGrades;
         
     }
 
-    string IAverageSystem.EnglishAverageSystem(Record UsersGrades, Record UsersAverages)
+    string IAverageSystem.EnglishAverageSystem(Record UsersGrades)
     {
         IAverageSystem calc = this;
 
-        decimal average = calc.Calculator(UsersGrades, UsersAverages)*100;
+        decimal average = calc.Calculator(UsersGrades);
 
-        string DisplayAverage = average switch
+        string AverageLetter = average switch
         {
-            >= 90 and <= 100 => $"{average:P2} A* - Congrats! ;)",
-            >= 80 and < 90 => $"{average:P2} A - Well Done! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 90, 100)} A* to reach A*",
-            >= 70 and < 80 => $"{average:P2} B - Good! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 80, 100)} more grades of A* to reach A",
-            >= 60 and < 70 => $"{average:P2} C - Average. If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 70, 100)} more grades of A* to reach B",
-            >= 50 and < 60 => $"{average:P2} D - Pass. If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 60, 100)} more grades of A* to reach C",
-            >= 40 and < 50 => $"{average:P2} E - Low Pass! Next time study harder! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 50, 100)} more grades of A* to reach D",
-            < 40 => $"{average:P2} F - Uh-oh! You are in trouble, but don't give up! You can still fix this." +
-            $"You only need {calc.CorrectionCalculator(UsersGrades, average, 40, 100)} more grades of A* and you'll be safe :)",
+            >= 90 and <= 100 => "A*",
+            >= 80 and < 90 => "A",
+            >= 70 and < 80 => "B",
+            >= 60 and < 70 => "C",
+            >= 50 and < 60 => "D",
+            >= 40 and < 50 => "E",
+            < 40 => "F",
+            _=> string.Empty
+        };
+
+        string DisplayAverage = AverageLetter switch
+        {
+            "A*" => $"{average:N2}% {AverageLetter} - Congrats! ;)",
+            "A" => $"{average:N2}% {AverageLetter} - Well Done! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 90, 100, string.Empty)} A* to reach {calc.CorrectionCalculator(UsersGrades, average, 90, 100, "CorrectedAverage"):N2}%",
+            "B" => $"{average:N2}% {AverageLetter} - Good! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 80, 100, string.Empty)} more grades of A* to reach {calc.CorrectionCalculator(UsersGrades, average, 80, 100, "CorrectedAverage"):N2}%",
+            "C" => $"{average:N2}% {AverageLetter} - Average. If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 70, 100, string.Empty)} more grades of A* to reach {calc.CorrectionCalculator(UsersGrades, average, 70, 100, "CorrectedAverage"):N2}%",
+            "D" => $"{average:N2}% {AverageLetter} - Pass. If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 60, 100, string.Empty)} more grades of A* to reach  {calc.CorrectionCalculator(UsersGrades, average, 60, 100, "CorrectedAverage"):N2}%",
+            "E" => $"{average:N2}% {AverageLetter} - Low Pass! Next time study harder! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 50, 100, string.Empty)} more grades of A* to reach  {calc.CorrectionCalculator(UsersGrades, average, 50, 100, "CorrectedAverage"):N2}%",
+            "F" => $"{average:N2}% {AverageLetter} - Uh-oh! You are in trouble, but don't give up! You can still fix this." +
+            $"You only need {calc.CorrectionCalculator(UsersGrades, average, 40, 100, string.Empty)} more grades of A* and you'll be safe :)",
             _ => string.Empty
         };
 
         return DisplayAverage;
     }
 
-    string IAverageSystem.HungarianAverageSystem(Record UsersGrades, Record UsersAverages)
+    string IAverageSystem.HungarianAverageSystem(Record UsersGrades)
     {
         IAverageSystem calc = this;
 
-        decimal average = calc.Calculator(UsersGrades, UsersAverages);
+        decimal average = calc.Calculator(UsersGrades);
 
         string DisplayAverage = average switch
         {
-            >= 4.5m and <= 5 => $"{Math.Round(average)}. Congrats! ;)",
-            >= 4 and < 4.5m => $"{Math.Round(average)}. Well done! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 4.5m, 5)} 5s to bring your average up to 4.5",
-            >= 3 and < 3.5m => $"{Math.Round(average)}. Good! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 3.5m, 5)} 5s to bring your average up to 3.5",
-            >= 2 and < 2.5m => $"{Math.Round(average)}. Next time study harder! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 2.5m, 5)} 5s to bring your average up to 2.5",
-            >= 1 and < 1.5m => $"{Math.Round(average)}. Uh-oh! You are in trouble, but don't give up! You can still fix this. If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 1.5m, 5)} 5s, and you'll be safe :)",
-            _ => string.Empty
-        };
-
-        return DisplayAverage;
-        
-    }
-
-    string IAverageSystem.RomanianAverageSystem(Record UsersGrades, Record UsersAverages)
-    {
-        IAverageSystem calc = this;
-
-        decimal average = calc.Calculator(UsersGrades, UsersAverages);
-
-        string DisplayAverage = average switch
-        {
-            >= 9.5M and <= 10 => $"{Math.Round(average)}. Congrats! ;)",
-            >= 9 and < 9.5m => $"{Math.Round(average)}. Well done! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 9.5m, 10)} 5s to bring your average up 9.5",
-            >= 8 and < 8.5m => $"{Math.Round(average)}. If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 8.5m, 10)} 5s to bring your average up 8.5",
-            >= 7 and <= 7.5m => $"{Math.Round(average)}. If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 7.5m, 10)} 5s to bring your average up 7.5",
-            >= 6 and < 6.5m => $"{Math.Round(average)}. If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 6.5m, 10)} 5s to bring your average up 6.5",
-            >= 5 and < 5.5m => $"{Math.Round(average)}. If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 5.5m, 10)} 5s to bring your average up 5.5",
-            >= 4 and < 4.5m => $"{Math.Round(average)}. Uh-oh, you are in trouble, but don't give up! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 4.5m, 10)} 5s to bring your average up 4.5",
-            >= 3 and < 3.5m => $"{Math.Round(average)}. Uh-oh, you are in trouble, but don't give up! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 3.5m, 10)} 5s to bring your average up 3.5",
-            >= 2 and < 2.5m => $"{Math.Round(average)}. Uh-oh, you are in trouble, but don't give up! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 2.5m, 10)} 5s to bring your average up 2.5",
-            >= 1 and < 1.5m => $"{Math.Round(average)}. Uh-oh, you are in trouble, but don't give up! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 1.5m, 10)} 5s to bring your average up 1.5",
+            >= 4.5m and <= 5 => $"{Math.Ceiling(average)} - Congrats! ;)",
+            >= 4 and < 4.5m => $"{Math.Ceiling(average)} - Well done! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 4.5m, 5, string.Empty)} 5(s) to bring your average up to {calc.CorrectionCalculator(UsersGrades, average, 4.5m, 100, "CorrectedAverage"):N2}",
+            >= 3 and < 3.5m => $"{Math.Ceiling(average)} - Good! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 3.5m, 5, string.Empty)} 5(s) to bring your average up to  {calc.CorrectionCalculator(UsersGrades, average, 3.5m, 100, "CorrectedAverage"):N2}",
+            >= 2 and < 2.5m => $"{Math.Ceiling(average)} - Next time study harder! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 2.5m, 5, string.Empty)} 5(s) to bring your average up to {calc.CorrectionCalculator(UsersGrades, average, 2.5m, 100, "CorrectedAverage"):N2}",
+            >= 1 and < 1.5m => $"{Math.Ceiling(average)} - Uh-oh! You are in trouble, but don't give up! You can still fix this. If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 1.5m, 5, string.Empty)} 5(s), and you'll be safe :)",
             _ => string.Empty
         };
 
@@ -107,22 +99,43 @@ public class AverageCalculator : IAverageSystem
         
     }
 
-    string IAverageSystem.UsedGradeSystem(Record AverageDisplay, Record SelectedAverageSystem)
+    string IAverageSystem.RomanianAverageSystem(Record UsersGrades)
     {
         IAverageSystem calc = this;
 
-        var AverageToDisplay = AverageDisplay.AverageDisplay;
-        var SelectedSystem = SelectedAverageSystem.AverageDisplay;
+        decimal average = calc.Calculator(UsersGrades);
 
-        AverageToDisplay = SelectedSystem switch
+        string DisplayAverage = average switch
         {
-            "English" => calc.EnglishAverageSystem(AverageDisplay, SelectedAverageSystem),
-            "Hungarian" => calc.HungarianAverageSystem(AverageDisplay, SelectedAverageSystem),
-            "Romanian" => calc.RomanianAverageSystem(AverageDisplay, SelectedAverageSystem),
+            >= 9.5m and <= 10 => $"{Math.Ceiling(average)} - Congrats! ;)",
+            >= 8.5m and < 9.5m => $"{Math.Ceiling(average)} - Well done! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 9.5m, 10, string.Empty)} 10(s) to bring your average up to {calc.CorrectionCalculator(UsersGrades, average, 9.5m, 10, "CorrectedAverage"):N2}",
+            >= 7.5m and < 8.5m => $"{Math.Ceiling(average)} - If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 8.5m, 10, string.Empty)} 10(s) to bring your average up to {calc.CorrectionCalculator(UsersGrades, average, 8.5m, 10, "CorrectedAverage"):N2}",
+            >= 6.5m and < 7.5m => $"{Math.Ceiling(average)} - If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 7.5m, 10, string.Empty)} 10(s) to bring your average up to  {calc.CorrectionCalculator(UsersGrades, average, 7.5m, 10, "CorrectedAverage"):N2}",
+            >= 5.5m and < 6.5m => $"{Math.Ceiling(average)} - If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 6.5m, 10, string.Empty)} 10(s) to bring your average up to  {calc.CorrectionCalculator(UsersGrades, average, 6.5m, 10, "CorrectedAverage"):N2}",
+            >= 4.5m and < 5.5m => $"{Math.Ceiling(average)} - If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 5.5m, 10, string.Empty)} 10(s) to bring your average up to  {calc.CorrectionCalculator(UsersGrades, average, 5.5m, 10, "CorrectedAverage"):N2}",
+            < 4.5m => $"{Math.Ceiling(average)} - Uh-oh, you are in trouble, but don't give up! If you want to raise your average you only need {calc.CorrectionCalculator(UsersGrades, average, 4.5m, 10, string.Empty)} 10(s) to bring your average up to  {calc.CorrectionCalculator(UsersGrades, average, 4.5m, 10, "CorrectedAverage"):N2}",
             _ => string.Empty
         };
 
-        return AverageToDisplay;
+        return DisplayAverage;
+        
+    }
+
+    string IAverageSystem.UsedAverageSystem(Record UsersGrades, Record Average, Record SelectedAverageSystem)
+    {
+        IAverageSystem calc = this;
+
+        var SelectedSystem = SelectedAverageSystem.SelectedAverageSystem;
+
+        Average.Average = SelectedSystem switch
+        {
+            "English" => calc.EnglishAverageSystem(UsersGrades),
+            "Hungarian" => calc.HungarianAverageSystem(UsersGrades),
+            "Romanian" => calc.RomanianAverageSystem(UsersGrades),
+            _ => string.Empty
+        };
+
+        return Average.Average;
     }
 
 }

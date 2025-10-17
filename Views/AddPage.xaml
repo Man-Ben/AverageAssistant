@@ -47,7 +47,7 @@
         
         <Entry
             
-            Text = "{Binding GradesInput, Mode = TwoWay}"
+            Text = "{Binding GradesInput}"
             Margin = "10"
             PlaceholderColor = "Snow"
             ClearButtonVisibility = "WhileEditing"
@@ -63,7 +63,7 @@
             <Picker
             Margin = "10"   
             ItemsSource = "{Binding AverageSystemPicker}"
-            SelectedItem = "{Binding selectedAverageSystem, Mode = TwoWay}"
+            SelectedItem = "{Binding SelectedAverageSystem}"
         >
         </Picker>
         <Label

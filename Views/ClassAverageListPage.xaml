@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm = "clr-namespace:AverageAssistant.ViewModels"
-             xmlns:models="clr-namespace:AverageAssistant.Models"
+             xmlns:vModels = "clr-namespace:AverageAssistant.RecordsVM"
              x:Class="AverageAssistant.ClassAverageListPage"
              x:DataType = "vm:CaViewModel"
 
@@ -13,24 +13,47 @@
                 ItemsSource="{Binding Records}"
                 HorizontalOptions = "Center"
             >
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout 
+                    Orientation = "Vertical" ItemSpacing = "10"/>
+            </CollectionView.ItemsLayout>
+                
                 <CollectionView.ItemTemplate>
                     <DataTemplate
-                        x:DataType = "models:Record"
+                        x:DataType = "vModels:RecordVM"
                         >
                     <Border
-                        StrokeShape="5,5"
-                        Margin = "10"
-                        Padding = "10"
+                        Margin = "15"
+                        Padding = "15"
+                        WidthRequest = "550"
+
                         >
-                        <StackLayout
-                            Spacing = "5"
-                            >
-                        
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius = "10"/>
+                        </Border.StrokeShape>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height = "Auto"/>
+                                <RowDefinition Height = "Auto"/>
+                                <RowDefinition Height = "Auto"/>
+                                <RowDefinition Height = "*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width = "*"/>
+                                <ColumnDefinition Width = "*"/>
+                                <ColumnDefinition Width = "Auto"/>
+                                <ColumnDefinition Width = "*"/>
+                            </Grid.ColumnDefinitions>
                             <Label
                                 Text = "{Binding GradeDisplay}"
                                 FontSize = "Medium"
-                                TextColor = "Snow"  
+                                TextColor = "Snow" 
+                                HorizontalTextAlignment="End"
                                 IsVisible = "{Binding IsGradeVisible}"
+                                Grid.Column="3"
+                                Grid.Row = "0"
                             ></Label>
 
                             <Label
@@ -38,19 +61,46 @@
                                 FontSize = "Medium"
                                 TextColor = "Snow"
                                 IsVisible = "{Binding IsSubjectNameVisible}"
+                                Grid.Column="0"
+                                Grid.Row = "0"
                                 ></Label>
+                            
                             <Label
                                 Text = "{Binding GradesDisplay}"
                                 TextColor = "Snow"
                                 IsVisible = "{Binding IsUsersGradesVisible}"
+                                Grid.Column="0"
+                                Grid.Row = "2"
                                 ></Label>
+                            
                             <Label
                                 Text = "{Binding NumberOfLessonsDisplay}"
                                 TextColor = "Snow"
                                 IsVisible = "{Binding IsNrLessonsVisible}"
+                                Grid.Column = "3"
+                                Grid.Row = "2"
                                 ></Label>
-                        
-                    </StackLayout>
+
+                            <Label
+                                 
+                                Text = "{Binding AverageDisplay}"
+                                TextColor = "Snow"
+                                LineBreakMode="WordWrap"
+                                MaxLines="10"
+                                IsVisible = "{Binding IsAverageVisible}"
+                                Grid.Column = "0"
+                                Grid.Row = "3"
+                                ></Label>
+
+                            <Label
+                                Text = "{Binding NumberOfLessonsWarning}"
+                                TextColor = "Snow"
+                                IsVisible = "{Binding IsNrGradesWarningVisible}"
+                                Grid.Column = "3"
+                                Grid.Row = "3"
+                                ></Label>
+
+                        </Grid>
                     </Border>
                 </DataTemplate>
                 </CollectionView.ItemTemplate>

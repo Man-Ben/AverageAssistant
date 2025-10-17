@@ -33,11 +33,11 @@ public partial class AddPageTools : ObservableObject
     public ObservableCollection<string> AverageSystemPicker { get; } = new ObservableCollection<string>
 {
     "English",
-    "Romanian",
-    "Hungarian"
+    "Hungarian",
+    "Romanian"
 };
 
-    public bool IsNrLessonsVisible => selectedAverageSystem == "Romanian";
+    public bool IsNrLessonsVisible => SelectedAverageSystem == "Romanian";
 
     partial void OnSelectedAverageSystemChanged(string? oldValue, string? newValue)
     {
@@ -77,8 +77,7 @@ public partial class AddPageTools : ObservableObject
             newRecord.SubjectName = SubjectName ?? string.Empty;
             newRecord.UsersGrades = UsersGrades.ToList();
             newRecord.NumberOfLessons = NumberOfLessons;
-            newRecord.IsNrLessonsVisible = IsNrLessonsVisible;
-            newRecord.SelectedAverageSystem = selectedAverageSystem ?? string.Empty;
+            newRecord.SelectedAverageSystem = SelectedAverageSystem ?? string.Empty;
         }
 
         WeakReferenceMessenger.Default.Send(newRecord);

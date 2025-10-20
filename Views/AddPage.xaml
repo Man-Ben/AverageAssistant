@@ -99,6 +99,8 @@
             <Button
             Text = "Add"
             TextColor = "Snow"
+            BorderColor = "Snow"
+            BorderWidth="1"
             BackgroundColor = "DarkBlue"
             Command = "{Binding AddCommand}"
             ></Button>

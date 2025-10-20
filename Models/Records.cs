@@ -49,3 +49,4 @@ public class Record
     public bool IsAverageVisible => !string.IsNullOrWhiteSpace(AverageDisplay);
     public bool IsNrGradesWarningVisible => !string.IsNullOrWhiteSpace(NumberOfGradesWarning) && IsNrLessonsVisible == true;
 }
+

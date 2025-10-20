@@ -26,7 +26,6 @@
                         Margin = "15"
                         Padding = "15"
                         WidthRequest = "550"
-
                         >
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius = "10"/>
@@ -38,6 +37,7 @@
                                 <RowDefinition Height = "Auto"/>
                                 <RowDefinition Height = "Auto"/>
                                 <RowDefinition Height = "*"/>
+                                <RowDefinition Height = "Auto"/>
                             </Grid.RowDefinitions>
                             
                             <Grid.ColumnDefinitions>
@@ -100,6 +100,20 @@
                                 Grid.Row = "3"
                                 ></Label>
 
+                            <Button
+                                Margin = "10"
+                                Text = "Delete"
+                                TextColor = "Snow"
+                                Command = "{Binding DeleteFileCommand}"
+                                Background = "Transparent"
+                                BorderColor = "Snow"
+                                BorderWidth="1"
+                                HeightRequest="20"
+                                WidthRequest = "80"
+                                Grid.Row = "4"
+                                Grid.Column="3"
+                                ></Button>
+
                         </Grid>
                     </Border>
                 </DataTemplate>
@@ -112,14 +126,18 @@
             >
 
         <Button
-                    Text="+"
-                    TextColor="White"
-                    FontSize = "50"
-                    Margin = "40"
-                    BackgroundColor="Transparent"
-                    Command = "{Binding GoToAddPageCommand}"
-                    AbsoluteLayout.LayoutBounds = "1,1,AutoSize,AutoSize"
-                    AbsoluteLayout.LayoutFlags = "PositionProportional"
+            Text="+"
+            TextColor="White"
+            FontSize = "50"
+            Margin = "70"
+            BackgroundColor="Transparent"
+            BorderColor="Snow"
+            BorderWidth = "1"
+            HeightRequest="65"
+            WidthRequest="70"
+            Command = "{Binding GoToAddPageCommand}"
+            AbsoluteLayout.LayoutBounds = "1,1,AutoSize,AutoSize"
+            AbsoluteLayout.LayoutFlags = "PositionProportional"
                 ></Button>
 
     </AbsoluteLayout>

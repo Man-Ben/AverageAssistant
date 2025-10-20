@@ -3,18 +3,34 @@ using AverageAssistant.Models;
 using AverageAssistant.Services;
 using AverageAssistant.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
-
+using CommunityToolkit.Mvvm.Input;
+using JsonManagement;
 namespace AverageAssistant.RecordsVM;
 
 public partial class RecordVM:ObservableObject
 {
-    public Record Model { get; }
+    public Record Model { get; set; }
 
     public RecordVM(Record model)
     {
         Model = model;
-        var calculator = new AverageCalculator();
-        Model.Average = ((IAverageSystem)calculator).UsedAverageSystem(Model, Model, Model);
+        var Calculator = new AverageCalculator();
+        Model.Average = ((IAverageSystem)Calculator).UsedAverageSystem(Model, Model, Model);
+    }
+
+    public async Task FileHandling()
+    {
+        var FileHandler = new JsonManager();
+        await ((IJsonManager)FileHandler).CreateFileForFlags(Model);
+        Model = await ((IJsonManager)FileHandler).ReadFromFileInput();
+    }
+
+    [RelayCommand]
+    public async Task DeleteFile()
+    {
+        var deleteFile = new JsonManager();
+
+        await ((IJsonManager)deleteFile).DeleteFile(Model);
     }
 
     public string? AverageDisplay => Model.AverageDisplay;
@@ -31,6 +47,7 @@ public partial class RecordVM:ObservableObject
     public bool IsAverageVisible => Model.IsAverageVisible;
     public bool IsNrGradesWarningVisible => Model.IsNrGradesWarningVisible;
 
+    
 
 }
 

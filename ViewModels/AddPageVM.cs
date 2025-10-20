@@ -1,9 +1,13 @@
 ﻿namespace AverageAssistant.ViewModels;
+
+using AverageAssistant.Models;
+using AverageAssistant.Services;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using JsonManagement;
 using System.Collections.ObjectModel;
-using AverageAssistant.Models;
 
 public partial class AddPageTools : ObservableObject
 {
@@ -44,6 +48,12 @@ public partial class AddPageTools : ObservableObject
         OnPropertyChanged(nameof(IsNrLessonsVisible));
     }
 
+    private readonly IJsonManager _jsonManager;
+
+    public AddPageTools()
+    {
+        _jsonManager = new JsonManager();
+    }
 
     [RelayCommand]
     public static async Task ConfirmLeave(string? value)
@@ -81,6 +91,8 @@ public partial class AddPageTools : ObservableObject
         }
 
         WeakReferenceMessenger.Default.Send(newRecord);
+
+        await _jsonManager.CreateFileForInput(newRecord);
 
         await Shell.Current.GoToAsync("..");
      }

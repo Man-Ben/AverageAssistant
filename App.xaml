@@ -1,14 +1,46 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AverageAssistant"
+             xmlns:themes = "clr-namespace:AverageAssistant.Appthemes"
              x:Class="AverageAssistant.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <themes:DarkTheme/>
             </ResourceDictionary.MergedDictionaries>
+            
+            <Style TargetType = "ContentPage">
+                <Setter Property = "BackgroundColor" Value = "{DynamicResource PrimaryBackgroundColor}"/>
+            </Style>
+
+            <Style TargetType = "Picker">
+                <Setter Property = "TextColor" Value = "{DynamicResource PrimaryPickerColor}"/>
+                <Setter Property = "BackgroundColor" Value = "{DynamicResource PrimaryBackgroundColor}"/>
+            </Style>
+
+            <Style TargetType="Border">
+                <Setter Property = "Stroke" Value = "{DynamicResource PrimaryBorderColor}"/>
+            </Style>
+
+            <Style TargetType = "Label">
+                <Setter Property = "TextColor" Value = "{DynamicResource PrimaryTextColor}"/>
+            </Style>
+
+            <Style TargetType = "Button">
+                <Setter Property = "BorderColor" Value = "{DynamicResource PrimaryBorderColor}"/>
+                <Setter Property = "TextColor" Value = "{DynamicResource PrimaryTextColor}"/>
+            </Style>
+
+            <Style TargetType = "Entry">
+                <Setter Property = "PlaceholderColor" Value = "{DynamicResource PrimaryPlaceHolderColor}"/>
+                <Setter Property = "TextColor" Value = "{DynamicResource PrimaryTextColor}"/>
+            </Style>
+
+            <Style TargetType = "Shell">
+                <Setter Property = "FlyoutBackgroundColor" Value="{DynamicResource PrimaryBackgroundColor}"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

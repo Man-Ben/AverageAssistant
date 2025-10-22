@@ -1,4 +1,6 @@
-﻿namespace AverageAssistant
+﻿using AverageAssistant.Views;
+
+namespace AverageAssistant
 {
     public partial class AppShell : Shell
     {
@@ -7,6 +9,7 @@
             InitializeComponent();
             Routing.RegisterRoute(nameof(AddPage), typeof(AddPage));
             Routing.RegisterRoute(nameof(ClassAverageListPage), typeof(ClassAverageListPage));
+            Routing.RegisterRoute(nameof(EditPage), typeof(EditPage));
         }
     }
 }

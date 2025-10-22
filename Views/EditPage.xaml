@@ -2,54 +2,64 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm = "clr-namespace:AverageAssistant.ViewModels"
-             x:Class="AverageAssistant.AddPage"
-             x:DataType = "vm:AddPageTools"
+             x:Class="AverageAssistant.Views.EditPage"
+             x:DataType = "vm:EditPageVM"
              BackgroundColor = "{DynamicResource PrimaryBackgroundColor}"
              >
+
     <ScrollView>
-    <StackLayout
+        <StackLayout
         HorizontalOptions="Center"
         VerticalOptions = "Center"
         >
 
             <Label
                     Text = "Enter the grade for this tab"
+                    TextColor = "{DynamicResource PrimaryTextColor}"
             ></Label>
-                
+
             <Entry
-                    Text = "{Binding Grade}"
+                    Text = "{Binding Grade, Mode = TwoWay}"
                     Margin = "10"
                     ClearButtonVisibility = "WhileEditing"
+                    PlaceholderColor = "{DynamicResource PrimaryTextColor}"
+                    TextColor = "{DynamicResource PrimaryTextColor}"
             ></Entry>
 
 
-        <Label
+            <Label
                 Margin = "10"
                 Text = "Enter the subject's name"
-
+                TextColor = "{DynamicResource PrimaryTextColor}"
              ></Label>
-        
-        <Entry
-                Text = "{Binding SubjectName}"
+
+            <Entry
+                Text = "{Binding SubjectName, Mode = TwoWay}"
                 Margin = "10"
+                PlaceholderColor = "Snow"
                 ClearButtonVisibility = "WhileEditing"
+                TextColor = "{DynamicResource PrimaryTextColor}"
+            
         ></Entry>
 
-        <Label
+            <Label
                 Text="Enter your grades"
+                TextColor = "{DynamicResource PrimaryTextColor}"
         ></Label>
-        
-        <Entry
+
+            <Entry
             
-            Text = "{Binding GradesInput}"
+            Text = "{Binding GradesInput, Mode = TwoWay}"
             Margin = "10"
+            PlaceholderColor = "{DynamicResource PrimaryTextColor}"
             ClearButtonVisibility = "WhileEditing"
             Keyboard = "Numeric"
             
         ></Entry>
 
-        <Label
+            <Label
                 Text ="Select the Grade system" 
+                TextColor = "{DynamicResource PrimaryTextColor}"
         ></Label>
 
             <Picker
@@ -57,41 +67,46 @@
             ItemsSource = "{Binding AverageSystemPicker}"
             SelectedItem = "{Binding SelectedAverageSystem}"
         >
-        </Picker>
-        <Label
+            </Picker>
+            <Label
              Text="Enter the number of lessons per week for this subject"
+             TextColor = "{DynamicResource PrimaryTextColor}"
              IsVisible = "{Binding IsNrLessonsVisible}"
         ></Label>
-        
-        <Entry
-            Text = "{Binding NumberOfLessonsInput}"
-            Margin = "10"
 
+            <Entry
+            Text = "{Binding NumberOfLessonsInput, Mode = TwoWay}"
+            Margin = "10"
+            PlaceholderColor = "{DynamicResource PrimaryTextColor}"
             ClearButtonVisibility = "WhileEditing"
             Keyboard = "Numeric"
             MaxLength="2"
             IsVisible = "{Binding IsNrLessonsVisible}"
         ></Entry>
-        
-        <HorizontalStackLayout
+
+            <HorizontalStackLayout
         Spacing="20"
         Margin = "40"
         VerticalOptions="Center"
         HorizontalOptions="Center"
         >
-            <Button
+                <Button
             Text = "Cancel"
+            TextColor = "{DynamicResource PrimaryTextColor}"
             BackgroundColor = "Transparent"
+            BorderColor=  "{DynamicResource PrimaryTextColor}"
             BorderWidth = "1"
             Command = "{Binding ConfirmLeaveCommand}"
             ></Button>
-            <Button
-            Text = "Add"
+                <Button
+            Text = "Edit"
+            TextColor = "{DynamicResource PrimaryTextColor}"
+            BorderColor = "Snow"
             BorderWidth="1"
             BackgroundColor = "DarkBlue"
-            Command = "{Binding AddCommand}"
+            Command = "{Binding EditCommand}"
             ></Button>
-        </HorizontalStackLayout>
-    </StackLayout>
+            </HorizontalStackLayout>
+        </StackLayout>
     </ScrollView>
 </ContentPage>

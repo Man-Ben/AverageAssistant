@@ -1,6 +1,4 @@
-﻿namespace AverageAssistant.ViewModels;
-
-using AverageAssistant.Models;
+﻿using AverageAssistant.Models;
 using AverageAssistant.RecordsVM;
 using AverageAssistant.Services;
 
@@ -10,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.Messaging;
 
+namespace AverageAssistant.ViewModels;
 
 public partial class CaViewModel : ObservableObject
 {
@@ -36,7 +35,7 @@ public partial class CaViewModel : ObservableObject
 
     public CaViewModel()
     {
-        WeakReferenceMessenger.Default.Register<CaViewModel,Record>(this, (r, newRecord) =>
+        WeakReferenceMessenger.Default.Register<CaViewModel, Record>(this, (r, newRecord) =>
         {
             var vm = new RecordVM(newRecord);   
             r.Records.Add(vm);

@@ -6,8 +6,8 @@ namespace JsonManagement;
 public interface IJsonManager
 {
     public Task CreateFileForInput(Record record);
-    public Task CreateFileForFlags(Record record);
-    public Task<Record> ReadFromFileInput();
+    public Task CreateFileForSettings();
+    public Task<Record> ReadFromFile();
 
     public Task DeleteFile(Record record);
 

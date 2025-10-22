@@ -13,11 +13,10 @@ public class AverageCalculator : IAverageSystem
 
         decimal sumOfGrades = gradesList.Sum();
         decimal average = 0;
-
-        if (gradesList.Count == 0)
-            return average;
         
-        average = sumOfGrades / gradesList.Count;
+        if(gradesList.Count > 1)
+            average = sumOfGrades / gradesList.Count;
+
         return average;
            
     }

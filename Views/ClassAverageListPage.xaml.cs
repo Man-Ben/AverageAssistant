@@ -1,6 +1,4 @@
 using AverageAssistant.ViewModels;
-using AverageAssistant.RecordsVM;
-using System.Threading.Tasks;
 
 namespace AverageAssistant;
 

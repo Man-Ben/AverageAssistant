@@ -9,7 +9,7 @@ public class Record
 {
 
     public List<int> UsersGrades { get; set; } = new();
-   
+
     public int NumberOfLessons;
 
 
@@ -38,7 +38,7 @@ public class Record
         ? $"The number of sessions: {NumberOfLessons}"
         : string.Empty;
     public string NumberOfGradesWarning => UsersGrades.Count - NumberOfLessons != 0
-        ? $"Warning! You do not not enough grades for this subject! You need {Math.Abs(UsersGrades.Count - NumberOfLessons)} more grade(s)"
+        ? $"Warning! You do not have enough grades for this subject! You need {Math.Abs(UsersGrades.Count - NumberOfLessons)} more grade(s)"
         : string.Empty;
 
 

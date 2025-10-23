@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.Messaging;
+using JsonManagement;
 
 namespace AverageAssistant.ViewModels;
 
@@ -37,9 +38,16 @@ public partial class CaViewModel : ObservableObject
     {
         WeakReferenceMessenger.Default.Register<CaViewModel, Record>(this, (r, newRecord) =>
         {
-            var vm = new RecordVM(newRecord);   
+            var vm = new RecordVM(newRecord, recordVM =>
+            {
+                r.Records.Remove(recordVM);
+
+            });
+
             r.Records.Add(vm);
+
         });
+
     }
 
     [RelayCommand]

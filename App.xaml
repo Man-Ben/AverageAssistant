@@ -8,6 +8,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <themes:DarkTheme/>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <Style TargetType = "ContentPage">
@@ -30,6 +32,7 @@
             <Style TargetType = "Button">
                 <Setter Property = "BorderColor" Value = "{DynamicResource PrimaryBorderColor}"/>
                 <Setter Property = "TextColor" Value = "{DynamicResource PrimaryTextColor}"/>
+                <Setter Property = "FontSize" Value = "15"/>
             </Style>
 
             <Style TargetType = "Entry">

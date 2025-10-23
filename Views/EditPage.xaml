@@ -14,12 +14,13 @@
         >
 
             <Label
-                    Text = "Enter the grade for this tab"
+                    Text = "Enter your grade"
                     TextColor = "{DynamicResource PrimaryTextColor}"
             ></Label>
 
             <Entry
-                    Text = "{Binding Grade, Mode = TwoWay}"
+                    Text = "{Binding Grade}"
+                    Placeholder = "{Binding Grade}"
                     Margin = "10"
                     ClearButtonVisibility = "WhileEditing"
                     PlaceholderColor = "{DynamicResource PrimaryTextColor}"
@@ -98,6 +99,7 @@
             BorderWidth = "1"
             Command = "{Binding ConfirmLeaveCommand}"
             ></Button>
+                
                 <Button
             Text = "Edit"
             TextColor = "{DynamicResource PrimaryTextColor}"

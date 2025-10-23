@@ -5,6 +5,7 @@ using AverageAssistant.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using JsonManagement;
 using System.Collections.ObjectModel;
 
 namespace AverageAssistant.ViewModels;
@@ -71,8 +72,34 @@ public partial class EditPageVM:ObservableObject
     }
 
     [RelayCommand]
-    public static async Task Edit()
+    public async Task Edit(Record recordToEdit)
     {
+        
+
+        if (recordToEdit == null)
+            return;
+
+        recordToEdit.Grade = this.Grade ?? recordToEdit.Grade;
+        recordToEdit.SubjectName = this.SubjectName ?? recordToEdit.SubjectName;
+        recordToEdit.NumberOfLessons = this.NumberOfLessons;
+        
+        recordToEdit.UsersGrades.Clear();
+
+        if (!string.IsNullOrWhiteSpace(GradesInput))
+        {
+            var gradeInNumbers = GradesInput
+                                .Split(new char[] { ',', ' ' }, System.StringSplitOptions.RemoveEmptyEntries)
+                                .Select(s => int.TryParse(s, out var number) ? number : 0);
+            foreach (var grade in gradeInNumbers)
+                recordToEdit.UsersGrades.Add(grade);
+        }
+
+        var FileHandler = new JsonManager();
+        await ((IJsonManager)FileHandler).DeleteFile(recordToEdit);
+        await ((IJsonManager)FileHandler).CreateFileForInput(recordToEdit);
+
+
+        WeakReferenceMessenger.Default.Send(recordToEdit);
 
         await Shell.Current.GoToAsync("..");
     }

@@ -1,5 +1,8 @@
 ﻿using AverageAssistant.Appthemes;
+using AverageAssistant.Services;
+
 using CommunityToolkit.Mvvm.ComponentModel;
+using JsonManagement;
 using System.Collections.ObjectModel;
 
 namespace AverageAssistant.SettingsPageVM;
@@ -44,6 +47,12 @@ public partial class SettingPageVM:ObservableObject
         }
         Application.Current.Resources.MergedDictionaries.Clear();
         Application.Current.Resources.MergedDictionaries.Add(dict);
+
+
+        var FileHandler = new JsonManager();
+        ((IJsonManager)FileHandler).CreateFileForSettings(SelectedAppTheme);
+
+
     }
 
 }

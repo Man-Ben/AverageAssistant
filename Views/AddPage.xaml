@@ -13,7 +13,7 @@
         >
 
             <Label
-                    Text = "Enter the grade for this tab"
+                    Text = "Enter your grade"
             ></Label>
                 
             <Entry

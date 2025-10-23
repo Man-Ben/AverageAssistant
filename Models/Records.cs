@@ -1,11 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using AverageAssistant.Services;
+﻿using AverageAssistant.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using JsonManagement;
 using System.Diagnostics;
 
 
 namespace AverageAssistant.Models;
 
-public class Record   
+public class Record
 {
 
     public List<int> UsersGrades { get; set; } = new();

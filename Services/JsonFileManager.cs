@@ -34,6 +34,22 @@ public class JsonManager:IJsonManager
 
     }
 
+    async Task IJsonManager.CreateFileForSettings(string settingToSave)
+    {
+        string fileName = $"Settings.json";
+        string baseDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+        string jsonDir = Path.Combine(baseDir, "Settings");
+        string filePath = Path.Combine(jsonDir, fileName);
+
+        Directory.CreateDirectory(jsonDir);
+
+
+        string jsonInput = JsonSerializer.Serialize(settingToSave, new JsonSerializerOptions { WriteIndented = true });
+
+        await File.WriteAllTextAsync(filePath, jsonInput);
+    }
+
+
     async Task<Record> IJsonManager.ReadFromFile()
     {
         string baseDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
@@ -78,11 +94,5 @@ public class JsonManager:IJsonManager
             await Task.Run(() => File.Delete(Delete));
 
     }
-
-    async Task IJsonManager.RenameFile()
-    {
-        throw new NotImplementedException();
-    }
-
 
 }

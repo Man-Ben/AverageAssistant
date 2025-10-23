@@ -12,13 +12,26 @@ namespace AverageAssistant.RecordsVM;
 public partial class RecordVM:ObservableObject
 {
     public Record Model { get; set; }
+    private readonly Action<RecordVM> _OnDeleted;
 
-    public RecordVM(Record model)
+    public RecordVM(Record model, Action<RecordVM> ondeleted)
     {
         Model = model;
+        _OnDeleted = ondeleted;
+
         var Calculator = new AverageCalculator();
         Model.Average = ((IAverageSystem)Calculator).UsedAverageSystem(Model, Model, Model);
 
+        WeakReferenceMessenger.Default.Register<RecordVM, Record>(this, (r, msg) =>
+        {
+            r.Model.Grade = msg.Grade;
+            r.Model.NumberOfLessons = msg.NumberOfLessons;
+            r.Model.SubjectName = msg.SubjectName;
+
+            Model.UsersGrades.Clear();
+            foreach (var grade in r.Model.UsersGrades)
+                r.Model.UsersGrades = msg.UsersGrades;
+        });
 
     }
 
@@ -32,11 +45,12 @@ public partial class RecordVM:ObservableObject
         {
             Model.Grade = inputRecord.Grade;
             Model.SubjectName = inputRecord.SubjectName;
-            Model.UsersGrades = inputRecord.UsersGrades;
             Model.NumberOfLessons = inputRecord.NumberOfLessons;
-        }
 
-        OnPropertyChanged(nameof(Model));
+            Model.UsersGrades.Clear();
+            foreach (var grade in inputRecord.UsersGrades)
+                Model.UsersGrades.Add(grade);
+        }
 
     }
 
@@ -52,6 +66,9 @@ public partial class RecordVM:ObservableObject
             var deleteFile = new JsonManager();
             await ((IJsonManager)deleteFile).DeleteFile(Model);
         }
+
+        _OnDeleted?.Invoke(this);
+
     }
 
     [RelayCommand]
@@ -71,6 +88,7 @@ public partial class RecordVM:ObservableObject
         await Shell.Current.GoToAsync(nameof(EditPage));
     }
 
+    
     public string? AverageDisplay => Model.AverageDisplay;
     public string GradeDisplay => Model.GradeDisplay;
     public string SubjectNameDisplay => Model.SubjectName;

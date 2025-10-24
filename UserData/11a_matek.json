@@ -1,10 +1,11 @@
 {
-  "Grade": "10 B",
+  "Grade": "11. A",
   "SubjectName": "Matek",
   "UsersGrades": [
     10,
     10,
     10
   ],
+  "SelectedAverageSystem": "Romanian",
   "NumberOfLessons": 7
 }

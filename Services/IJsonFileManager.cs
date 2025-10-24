@@ -7,7 +7,7 @@ public interface IJsonManager
 {
     public Task CreateFileForInput(Record record);
     public Task CreateFileForSettings(string settingToSave);
-    public Task<Record> ReadFromFile();
+    public Task<List<Record>> ReadFromFile();
 
     public Task DeleteFile(Record record);
 

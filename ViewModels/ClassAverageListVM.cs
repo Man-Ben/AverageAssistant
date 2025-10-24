@@ -38,15 +38,30 @@ public partial class CaViewModel : ObservableObject
     {
         WeakReferenceMessenger.Default.Register<CaViewModel, Record>(this, (r, newRecord) =>
         {
-            var vm = new RecordVM(newRecord, recordVM =>
-            {
-                r.Records.Remove(recordVM);
 
-            });
+                var vm = new RecordVM(newRecord, recordVM =>
+                {
+                    r.Records.Remove(recordVM);
 
-            r.Records.Add(vm);
+                });
+                r.Records.Add(vm);
 
         });
+    }
+
+    public async Task LoadRecordsFormFiles()
+    {
+        var FileHandler = new JsonManager();
+        var InputRecord = await ((IJsonManager)FileHandler).ReadFromFile();
+
+
+        foreach(var record in InputRecord)
+        {
+            var vm = new RecordVM(record, r => Records.Remove(r));
+            vm.CalculateDisplayProperties();
+            Records.Add(vm);
+            
+        }
 
     }
 

@@ -7,20 +7,22 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using JsonManagement;
+using System.Collections.ObjectModel;
 namespace AverageAssistant.RecordsVM;
 
-public partial class RecordVM:ObservableObject
+public partial class RecordVM : ObservableObject
 {
     public Record Model { get; set; }
+
     private readonly Action<RecordVM> _OnDeleted;
+
 
     public RecordVM(Record model, Action<RecordVM> ondeleted)
     {
         Model = model;
         _OnDeleted = ondeleted;
 
-        var Calculator = new AverageCalculator();
-        Model.Average = ((IAverageSystem)Calculator).UsedAverageSystem(Model, Model, Model);
+        CalculateDisplayProperties();
 
         WeakReferenceMessenger.Default.Register<RecordVM, Record>(this, (r, msg) =>
         {
@@ -29,32 +31,51 @@ public partial class RecordVM:ObservableObject
             r.Model.SubjectName = msg.SubjectName;
 
             Model.UsersGrades.Clear();
-            foreach (var grade in r.Model.UsersGrades)
-                r.Model.UsersGrades = msg.UsersGrades;
+            foreach (var grade in msg.UsersGrades)
+                Model.UsersGrades.Add(grade);
         });
 
+
     }
 
-    public async Task FileHandling()
+    public void CalculateDisplayProperties()
     {
-        var FileHandler = new JsonManager();
+        var Calculator = new AverageCalculator();
+        Model.Average = ((IAverageSystem)Calculator).UsedAverageSystem(Model, Model, Model);
 
-        var inputRecord = await ((IJsonManager)FileHandler).ReadFromFile();
+        AverageDisplay = !string.IsNullOrWhiteSpace(Model.Average)
+        ? Model.Average
+        : string.Empty;
 
-        if (inputRecord != null)
-        {
-            Model.Grade = inputRecord.Grade;
-            Model.SubjectName = inputRecord.SubjectName;
-            Model.NumberOfLessons = inputRecord.NumberOfLessons;
+        SubjectNameDisplay = !string.IsNullOrWhiteSpace(Model.SubjectName)
+        ? $"{Model.SubjectName}"
+        : string.Empty;
 
-            Model.UsersGrades.Clear();
-            foreach (var grade in inputRecord.UsersGrades)
-                Model.UsersGrades.Add(grade);
-        }
+        GradeDisplay = !string.IsNullOrWhiteSpace(Model.Grade)
+        ? $"{Model.Grade}"
+        : string.Empty;
+
+        GradesDisplay = Model.UsersGrades.Count > 0
+        ? $"Your grades: {string.Join(", ", Model.UsersGrades)}"
+        : string.Empty;
+
+        NumberOfLessonsDisplay = Model.NumberOfLessons > 0
+        ? $"The number of sessions: {Model.NumberOfLessons}"
+        : string.Empty;
+
+        NumberOfGradesWarning = Model.UsersGrades.Count - (Model.NumberOfLessons+3) != 0
+        ? $"Warning! You do not have enough grades for this subject! You need {Math.Abs(Model.UsersGrades.Count - (Model.NumberOfLessons + 3))} more grade(s)"
+        : string.Empty;
+
+        IsNrLessonsVisible = !string.IsNullOrEmpty(NumberOfLessonsDisplay);
+        IsUsersGradesVisible = Model.UsersGrades.Count > 0;
+        IsSubjectNameVisible = !string.IsNullOrWhiteSpace(Model.SubjectName);
+        IsGradeVisible = !string.IsNullOrWhiteSpace(Model.Grade);
+        IsAverageVisible = !string.IsNullOrWhiteSpace(AverageDisplay);
+        IsNrGradesWarningVisible = !string.IsNullOrWhiteSpace(NumberOfGradesWarning) && IsNrLessonsVisible == true;
+
 
     }
-
-
 
     [RelayCommand]
     public async Task DeleteFile()
@@ -64,43 +85,51 @@ public partial class RecordVM:ObservableObject
         if (answer)
         {
             var deleteFile = new JsonManager();
+
             await ((IJsonManager)deleteFile).DeleteFile(Model);
+
+            _OnDeleted?.Invoke(this);
         }
 
-        _OnDeleted?.Invoke(this);
+        
 
     }
 
     [RelayCommand]
-    public async Task GoToEdit()
+    public async Task GoToEdit(ObservableCollection<RecordVM> centralCollection)
     {
+
         var RecordForEdit = new Record()
         {
             Grade = Model.Grade,
             SubjectName = Model.SubjectName,
-            UsersGrades = Model.UsersGrades,
+            UsersGrades = Model.UsersGrades.ToList(),
             NumberOfLessons = Model.NumberOfLessons,
             SelectedAverageSystem = Model.SelectedAverageSystem
         };
 
         WeakReferenceMessenger.Default.Send(RecordForEdit);
 
+        _OnDeleted?.Invoke(this);
+
+        var FileHandler = new JsonManager();
+        await ((IJsonManager)FileHandler).DeleteFile(RecordForEdit);
+
         await Shell.Current.GoToAsync(nameof(EditPage));
     }
 
-    
-    public string? AverageDisplay => Model.AverageDisplay;
-    public string GradeDisplay => Model.GradeDisplay;
-    public string SubjectNameDisplay => Model.SubjectName;
-    public string GradesDisplay => Model.GradesDisplay;
-    public string NumberOfLessonsDisplay => Model.NumberOfLessonsDisplay;
-    public string NumberOfLessonsWarning => Model.NumberOfGradesWarning;
 
-    public bool IsNrLessonsVisible => Model.IsNrLessonsVisible;
-    public bool IsUsersGradesVisible => Model.IsUsersGradesVisible;
-    public bool IsSubjectNameVisible => Model.IsSubjectNameVisible;
-    public bool IsGradeVisible => Model.IsGradeVisible;
-    public bool IsAverageVisible => Model.IsAverageVisible;
-    public bool IsNrGradesWarningVisible => Model.IsNrGradesWarningVisible;
+    public string? AverageDisplay { get; set; }
+    public string? SubjectNameDisplay { get; set; }
+    public string? GradeDisplay { get; set; }
+    public string? GradesDisplay { get; set; }
+    public string? NumberOfLessonsDisplay { get; set; }
+    public string? NumberOfGradesWarning { get; set; }
+
+    public bool IsNrLessonsVisible { get; set; }
+    public bool IsUsersGradesVisible { get; set; }
+    public bool IsSubjectNameVisible { get; set; }
+    public bool IsGradeVisible { get; set; }
+    public bool IsAverageVisible { get; set; }
+    public bool IsNrGradesWarningVisible { get; set; }
 }
-

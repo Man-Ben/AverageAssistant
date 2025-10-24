@@ -1,7 +1,5 @@
 ﻿using AverageAssistant.Models;
 using AverageAssistant.Services;
-using System.Linq.Expressions;
-using System.Reflection.Metadata;
 
 namespace AverageAssistant.Services;
 
@@ -50,8 +48,11 @@ public class AverageCalculator : IAverageSystem
 
         decimal average = calc.Calculator(UsersGrades);
 
+        if (average == 0)
+            return string.Empty;
+
         string AverageLetter = average switch
-        {
+        { 
             >= 90 and <= 100 => "A*",
             >= 80 and < 90 => "A",
             >= 70 and < 80 => "B",
@@ -64,6 +65,7 @@ public class AverageCalculator : IAverageSystem
 
         string DisplayAverage = AverageLetter switch
         {
+
             "A*" => $"{average:N2}% {AverageLetter} - Congrats! ;)",
             "A" => $"{average:N2}% {AverageLetter} - Well Done! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 90, 100, string.Empty)} A* to reach {calc.CorrectionCalculator(UsersGrades, average, 90, 100, "CorrectedAverage"):N2}%",
             "B" => $"{average:N2}% {AverageLetter} - Good! If you want to raise your average, you only need {calc.CorrectionCalculator(UsersGrades, average, 80, 100, string.Empty)} more grades of A* to reach {calc.CorrectionCalculator(UsersGrades, average, 80, 100, "CorrectedAverage"):N2}%",
@@ -84,6 +86,9 @@ public class AverageCalculator : IAverageSystem
 
         decimal average = calc.Calculator(UsersGrades);
 
+        if (average == 0)
+            return string.Empty;
+
         string DisplayAverage = average switch
         {
             >= 4.5m and <= 5 => $"{Math.Ceiling(average)} - Congrats! ;)",
@@ -103,6 +108,9 @@ public class AverageCalculator : IAverageSystem
         IAverageSystem calc = this;
 
         decimal average = calc.Calculator(UsersGrades);
+
+        if (average == 0)
+            return string.Empty;
 
         string DisplayAverage = average switch
         {

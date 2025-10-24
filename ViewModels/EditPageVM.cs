@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace AverageAssistant.ViewModels;
 
-public partial class EditPageVM:ObservableObject
+public partial class EditPageVM : ObservableObject
 {
     [ObservableProperty]
     public string? grade;
@@ -52,11 +52,18 @@ public partial class EditPageVM:ObservableObject
     {
         WeakReferenceMessenger.Default.Register<EditPageVM, Record>(this, (r, RecordForEdit) =>
         {
-            r.Records ??= new ObservableCollection<Record>();
-            r.Records.Add(RecordForEdit);
+
+            r.Grade = RecordForEdit.Grade;
+            r.SubjectName = RecordForEdit.SubjectName;
+            r.SelectedAverageSystem = RecordForEdit.SelectedAverageSystem;
+            r.NumberOfLessonsInput = RecordForEdit.NumberOfLessons.ToString();
+
+            r.UsersGrades.Clear();
+
+            foreach (var item in RecordForEdit.UsersGrades)
+                r.UsersGrades.Add(item);
 
             r.GradesInput = string.Join(", ", RecordForEdit.UsersGrades);
-            r.NumberOfLessonsInput = numberOfLessons.ToString();
         });
     }
 
@@ -72,36 +79,37 @@ public partial class EditPageVM:ObservableObject
     }
 
     [RelayCommand]
-    public async Task Edit(Record recordToEdit)
+    public async Task Edit()
     {
-        
 
-        if (recordToEdit == null)
-            return;
+        var FileHandler = new JsonManager();
 
-        recordToEdit.Grade = this.Grade ?? recordToEdit.Grade;
-        recordToEdit.SubjectName = this.SubjectName ?? recordToEdit.SubjectName;
-        recordToEdit.NumberOfLessons = this.NumberOfLessons;
-        
-        recordToEdit.UsersGrades.Clear();
-
+        UsersGrades.Clear();
         if (!string.IsNullOrWhiteSpace(GradesInput))
         {
             var gradeInNumbers = GradesInput
                                 .Split(new char[] { ',', ' ' }, System.StringSplitOptions.RemoveEmptyEntries)
                                 .Select(s => int.TryParse(s, out var number) ? number : 0);
             foreach (var grade in gradeInNumbers)
-                recordToEdit.UsersGrades.Add(grade);
+                UsersGrades.Add(grade);
         }
 
-        var FileHandler = new JsonManager();
-        await ((IJsonManager)FileHandler).DeleteFile(recordToEdit);
-        await ((IJsonManager)FileHandler).CreateFileForInput(recordToEdit);
+        NumberOfLessons = int.TryParse(NumberOfLessonsInput, out var lessons) ? lessons : 0;
 
+        var newRecord = new Record();
+        {
+            newRecord.Grade = Grade ?? string.Empty;
+            newRecord.SubjectName = SubjectName ?? string.Empty;
+            newRecord.UsersGrades = UsersGrades.ToList();
+            newRecord.NumberOfLessons = NumberOfLessons;
+            newRecord.SelectedAverageSystem = SelectedAverageSystem ?? string.Empty;
+        }
 
-        WeakReferenceMessenger.Default.Send(recordToEdit);
+        WeakReferenceMessenger.Default.Send(newRecord);
+
+        await ((IJsonManager)FileHandler).CreateFileForInput(newRecord);
 
         await Shell.Current.GoToAsync("..");
-    }
 
+    }
 }

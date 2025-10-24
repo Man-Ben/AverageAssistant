@@ -7,7 +7,12 @@ public partial class ClassAverageListPage : ContentPage
     public ClassAverageListPage()
     {
         InitializeComponent();
-        this.BindingContext = new CaViewModel();
+        
+        var vm = new CaViewModel();
+        BindingContext = vm;
+
+        _ = vm.LoadRecordsFormFiles();
+
     }
 
 }

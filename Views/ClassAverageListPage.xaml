@@ -38,13 +38,15 @@
                                 <RowDefinition Height = "Auto"/>
                                 <RowDefinition Height = "*"/>
                                 <RowDefinition Height = "Auto"/>
+                                <RowDefinition Height = "Auto"/>
                             </Grid.RowDefinitions>
-                            
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width = "*"/>
                                 <ColumnDefinition Width = "*"/>
                                 <ColumnDefinition Width = "Auto"/>
                                 <ColumnDefinition Width = "*"/>
+                                <ColumnDefinition Width = "Auto"/>
                                 <ColumnDefinition Width = "Auto"/>
                             </Grid.ColumnDefinitions>
                             <Label
@@ -65,14 +67,14 @@
                                 Grid.Column="0"
                                 Grid.Row = "0"
                                 ></Label>
-                            
+
                             <Label
                                 Text = "{Binding GradesDisplay}"
                                 IsVisible = "{Binding IsUsersGradesVisible}"
                                 Grid.Column="0"
                                 Grid.Row = "2"
                                 ></Label>
-                            
+
                             <Label
                                 Text = "{Binding NumberOfLessonsDisplay}"
                                 Margin = "4"
@@ -92,7 +94,7 @@
                                 ></Label>
 
                             <Label
-                                Text = "{Binding NumberOfLessonsWarning}"
+                                Text = "{Binding NumberOfGradesWarning}"
                                 IsVisible = "{Binding IsNrGradesWarningVisible}"
                                 LineBreakMode="WordWrap"
                                 MaxLines="10"
@@ -116,6 +118,7 @@
                                 Command = "{Binding GoToEditCommand}"
                                 Background = "DarkBlue"
                                 BorderWidth="1"
+                                WidthRequest="80"
                                 Grid.Row = "4"
                                 Grid.Column="4"
                                 ></Button>

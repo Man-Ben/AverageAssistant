@@ -25,7 +25,9 @@ public class JsonManager:IJsonManager
             record.Grade,
             record.SubjectName,
             record.UsersGrades,
-            record.NumberOfLessons,
+            record.SelectedAverageSystem,
+            record.NumberOfLessons
+            
         };
 
         string jsonInput = JsonSerializer.Serialize(inputData, new JsonSerializerOptions { WriteIndented = true });
@@ -50,7 +52,7 @@ public class JsonManager:IJsonManager
     }
 
 
-    async Task<Record> IJsonManager.ReadFromFile()
+    async Task<List<Record>> IJsonManager.ReadFromFile()
     {
         string baseDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
         string jsonDir = Path.Combine(baseDir, "UserData");
@@ -59,6 +61,7 @@ public class JsonManager:IJsonManager
 
         string[] files = Directory.GetFiles(jsonDir, "*.json");
 
+        var records = new List<Record>();
 
         foreach(var file in files)
         {
@@ -66,10 +69,10 @@ public class JsonManager:IJsonManager
             var recordReading = JsonSerializer.Deserialize<Record>(json);
 
             if(recordReading != null)
-                return recordReading;
+                records.Add(recordReading);
         }
-        return null!;
 
+        return records;
     }
    
     async Task IJsonManager.DeleteFile(Record record)

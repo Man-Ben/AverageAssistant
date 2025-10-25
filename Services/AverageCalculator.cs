@@ -1,10 +1,31 @@
-﻿using AverageAssistant.Models;
+﻿/*-----------------------------
+Project name  : Average Assistant
+Developer     : Benjamin Man
+Project start : 15. 09. 2025
+Project end   : 25. 10. 2025
+Main purpose  : Help students calculate and manage their averages easily.
+------------------------------*/
+
+/*---------------------
+Main task of the file
+
+This file contains the logic for average calculation, average correction,
+the output string formation, and decision making.
+----------------------- */
+
+using AverageAssistant.Models;
 using AverageAssistant.Services;
 
 namespace AverageAssistant.Services;
 
 public class AverageCalculator : IAverageSystem
 {
+
+    /*
+        This method calculates the average. The 'UsersGrades' parameter
+        contains the data to be processed. When the task ends, the method returns the 'average' decimal.
+    */
+
     decimal IAverageSystem.Calculator(Record UsersGrades)
     {
         var gradesList = UsersGrades.UsersGrades;
@@ -18,6 +39,16 @@ public class AverageCalculator : IAverageSystem
         return average;
            
     }
+
+    /*
+        This method has two functions: counts how many 'best grades' (the best grade in the used average system, 
+        for example: in the Romanian system the best grade is 10) are needed, and calculates a better average (for example from 4.30 to 5, 
+        or 6.20 to 7).
+        The 'UsersGrades' parameter contains the data to be processed again. The starterValue is the first and low average. 
+        The endValue is the second and better average. The 'bestGradeInTheSystem' contains the best grade in the current average system.
+        This will be added to the starterValue until it reaches the endValue.
+        The 'functionOfMethod' parameter has an important rule. If this has the 'Corrected Average' value, the method returns the modified starterValue.
+    */
 
     decimal IAverageSystem.CorrectionCalculator(Record UsersGrades, decimal starterValue, decimal endValue, decimal bestGradeInTheSystem, string functionOfMethod)
     {
@@ -41,6 +72,12 @@ public class AverageCalculator : IAverageSystem
             return numberOfBestGrades;
         
     }
+
+    /*
+      The 'EnglishAverageSystem', the 'HungarianAverageSystem' and the 'RomanianAverageSystem' methods format a string
+      that will be displayed as a message to the user. This string contains the following information: the average, a little message for
+      the user (ex. 'Congrats'), and - if necessary - the corrected average and the number of best grades needed for correction.
+    */
 
     string IAverageSystem.EnglishAverageSystem(Record UsersGrades)
     {
@@ -127,6 +164,10 @@ public class AverageCalculator : IAverageSystem
         return DisplayAverage;
         
     }
+
+    /*
+        This method decides which of the three average systems will be used.
+     */
 
     string IAverageSystem.UsedAverageSystem(Record UsersGrades, Record Average, Record SelectedAverageSystem)
     {

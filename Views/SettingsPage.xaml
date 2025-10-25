@@ -16,24 +16,13 @@
             Text = "Pick the app theme"
             Margin = "10"
             ></Label>
-        
+
         <Picker
             ItemsSource = "{Binding AppthemPicker}"
             SelectedItem = "{Binding SelectedAppTheme}"
             >
         </Picker>
 
-        <Label
-            Text = "Pick the default average system"
-            Margin = "10"
-            ></Label>
-        
-        <Picker
-            ItemsSource = "{Binding DefaultAverageSystemPicker}"
-            SelectedItem = "{Binding SelectedDefaultAverageSystem}"
-            >
-        </Picker>
-        
     </StackLayout>
 
 </ContentPage>

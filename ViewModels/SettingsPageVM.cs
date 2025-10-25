@@ -1,31 +1,41 @@
-﻿using AverageAssistant.Appthemes;
+﻿/*-----------------------------
+Project name  : Average Assistant
+Developer     : Benjamin Man
+Project start : 15. 09. 2025
+Project end   : 25. 10. 2025
+Main purpose  : Help students calculate and manage their averages easily.
+------------------------------*/
+
+/*---------------------
+Main task of the file
+
+This ViewModel manages the settings that the user might modify.
+----------------------- */
+
+
+using AverageAssistant.Appthemes;
 using AverageAssistant.Services;
+using JsonManagement;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using JsonManagement;
 using System.Collections.ObjectModel;
 
 namespace AverageAssistant.SettingsPageVM;
 
 public partial class SettingPageVM:ObservableObject
 {
-    [ObservableProperty]
-    public string selectedAppTheme = string.Empty;
-    [ObservableProperty]
-    public string selectedDefaultAverageSystem = string.Empty;
 
-    public ObservableCollection<string> AppthemPicker { get; } = new ObservableCollection<string>()
+    //If there are any modifications, this method will load it from a JSON.
+    public async Task LoadSettingsFromFile()
     {
-        "Dark",
-        "Light"
-    };
+        var FileHandler = new JsonManager();
+        var FileSetting = await ((IJsonManager)FileHandler).ReadFromFileSettings();
+        SelectedAppTheme = FileSetting!;
+        OnPropertyChanged(nameof(SelectedAppTheme));
+    }
 
-    public ObservableCollection<string> DefaultAverageSystemPicker { get; } = new ObservableCollection<string>()
-    {
-        "English",
-        "Hungarian",
-        "Romanian"
-    };
+    
+    //Here the program sets the app theme. After setting it, the method calls the 'CreateFileForSettings' method 
 
     partial void OnSelectedAppThemeChanged(string value)
     {
@@ -54,5 +64,14 @@ public partial class SettingPageVM:ObservableObject
 
 
     }
+
+    [ObservableProperty]
+    public string selectedAppTheme = string.Empty;
+
+    public ObservableCollection<string> AppthemPicker { get; } = new ObservableCollection<string>()
+    {
+        "Dark",
+        "Light"
+    };
 
 }

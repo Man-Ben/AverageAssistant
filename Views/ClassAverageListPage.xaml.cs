@@ -1,4 +1,5 @@
 using AverageAssistant.ViewModels;
+using AverageAssistant.SettingsPageVM;
 
 namespace AverageAssistant;
 
@@ -12,7 +13,13 @@ public partial class ClassAverageListPage : ContentPage
         BindingContext = vm;
 
         _ = vm.LoadRecordsFormFiles();
+    }
 
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        var Settings = new SettingPageVM();
+        await Settings.LoadSettingsFromFile();
     }
 
 }

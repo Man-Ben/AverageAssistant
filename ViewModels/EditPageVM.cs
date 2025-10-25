@@ -1,52 +1,51 @@
-﻿using AverageAssistant.Models;
+﻿/*-----------------------------
+Project name  : Average Assistant
+Developer     : Benjamin Man
+Project start : 15. 09. 2025
+Project end   : 25. 10. 2025
+Main purpose  : Help students calculate and manage their averages easily.
+------------------------------*/
+
+/*---------------------
+Main task of the file
+
+This ViewModel handles the modified data entered by the user. It acts like the 'AddPage', and there are very much commun commands,
+so I won't document again everything.
+----------------------- */
+
+/*----------------------
+ Detected issues
+
+ I wanted to display the received data in the entries, but it does not work. Cause: Unknown.
+
+ I tried my best, the fixing was unsuccessful.
+ -----------------------*/
+
+
+using AverageAssistant.Models;
 using AverageAssistant.RecordsVM;
 using AverageAssistant.Services;
 using AverageAssistant.ViewModels;
+using JsonManagement;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using JsonManagement;
 using System.Collections.ObjectModel;
 
 namespace AverageAssistant.ViewModels;
 
 public partial class EditPageVM : ObservableObject
 {
-    [ObservableProperty]
-    public string? grade;
-
-    [ObservableProperty]
-    public string? subjectName;
-
-    [ObservableProperty]
-    public ObservableCollection<int> usersGrades = new();
-
-    [ObservableProperty]
-    public int numberOfLessons;
-
-    [ObservableProperty]
-    public string? numberOfLessonsInput;
-
-    [ObservableProperty]
-    public string? selectedAverageSystem;
-
-    [ObservableProperty]
-    public string? gradesInput;
-
-    public ObservableCollection<Record> Records { get; set; } = new();
-
-    public ObservableCollection<string> AverageSystemPicker { get; } = new ObservableCollection<string>
-{
-    "English",
-    "Hungarian",
-    "Romanian"
-};
-
-    public bool IsNrLessonsVisible => SelectedAverageSystem == "Romanian";
     partial void OnSelectedAverageSystemChanged(string? oldValue, string? newValue)
     {
         OnPropertyChanged(nameof(IsNrLessonsVisible));
     }
+
+    /*
+        In the constructor the 'EditPageVM' receives the existing data from the 'RecordsVM'.
+        Later in this code the existing code that was modified by the user, the program will send back to the 'RecordsVM'.
+     */
 
     public EditPageVM()
     {
@@ -112,4 +111,37 @@ public partial class EditPageVM : ObservableObject
         await Shell.Current.GoToAsync("..");
 
     }
+
+
+    [ObservableProperty]
+    public string? grade;
+
+    [ObservableProperty]
+    public string? subjectName;
+
+    [ObservableProperty]
+    public ObservableCollection<int> usersGrades = new();
+
+    [ObservableProperty]
+    public int numberOfLessons;
+
+    [ObservableProperty]
+    public string? numberOfLessonsInput;
+
+    [ObservableProperty]
+    public string? selectedAverageSystem;
+
+    [ObservableProperty]
+    public string? gradesInput;
+
+    public ObservableCollection<Record> Records { get; set; } = new();
+
+    public ObservableCollection<string> AverageSystemPicker { get; } = new ObservableCollection<string>
+{
+    "English",
+    "Hungarian",
+    "Romanian"
+};
+
+    public bool IsNrLessonsVisible => SelectedAverageSystem == "Romanian";
 }

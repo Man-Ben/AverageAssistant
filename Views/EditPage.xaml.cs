@@ -9,5 +9,5 @@ public partial class EditPage : ContentPage
 	{
 		InitializeComponent();
         this.BindingContext = new EditPageVM();
-	}
+    }
 }

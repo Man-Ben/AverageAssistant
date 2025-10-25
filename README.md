@@ -1,13 +1,13 @@
-The purpose of this project
+##The purpose of this project
 
 This project was built to help students manage their grades and calculate their averages, and calculate how many good grades are needed to
 reach a higher average.
 
-Used tools
+##Used tools
 
 .NET MAUI, C#, ChatGPT-5 - I didn't just copy and pasted!
 
-Main features:
+##Main features:
 
 - Average calculation.
 - Corrected average calculation (if necessary).
@@ -21,7 +21,7 @@ So, implemented a feature that displays if they have enough grades or not.
 - App theme changing.
 - Easy data deletion and modification.
 
-Plans for the future:
+##Plans for the future:
 
 - Fixing the remaining issues.
 - Adding new average systems.
@@ -30,18 +30,18 @@ Plans for the future:
 - Update the UI.
 - Adding extra options in Setting - default average system, for example.
 
-  Existing issues:
+##Existing issues:
 
 - The 'NumberOfLessons' and 'NumberOfGradesWarning' fields do not display correctly when the data was loaded from file. Cause: unknown
 - After editing, the old data remains on the screen. After restarting the app it disappears. Cause: unknown
 
-About me
+##About me
 
 My name is Benjamin Man. I'm a 17 years-old student at 'Németh László' highschool in Romania. I started learning programing when was 14-15.
 My first programing langueges: C++ and C#. And this is my first UI app.
 
 
-The story behind the project
+##The story behind the project
 
 As a student I know very well how annoying can be to calculate an average. Checking my report card, memorizing my grades and then calculate 
 it with the calculator was to much work for my lazy head. I got an idea: what if I make an app, that helps students to calculate their 
@@ -54,7 +54,7 @@ the .NET MAUI intresting and easy to use - it wasn't. In this period, I heard ab
 than join in a hackathon. After a while I found the 'Youth Coders Hackathon' and joined.
 The Average Assistant 2.0 is the fruit of 2 months hard work and learning.
 
-What I learned
+##What I learned
 
 As I said above, I used AI while working, but I wrote every single line with my own hands. ChatGPT just helped and taught me. 
 Thanks to it and to Microsoft documentations I learned the folowings:
